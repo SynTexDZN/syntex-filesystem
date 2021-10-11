@@ -1,0 +1,30 @@
+{
+	"name": "syntex-filesystem",
+	"version": "1.0.0",
+	"description": "A Basic File System",
+	"main": "main.js",
+	"author": "SynTexDZN",
+	"engines": {
+		"homebridge": ">=0.3.0",
+		"node": ">=9.11.2"
+	},
+	"keywords": [
+		"syntex",
+		"syntex-filesystem",
+		"plugin",
+		"file",
+		"filesystem"
+	],
+	"homepage": "https://github.com/SynTexDZN/syntex-filesystem#readme",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/SynTexDZN/syntex-filesystem.git"
+	},
+	"bugs": {
+		"url": "https://github.com/SynTexDZN/syntex-filesystem/issues"
+	},
+	"license": "ISC",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	}
+}
