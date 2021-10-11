@@ -89,6 +89,8 @@ module.exports = class FileManager
 					}
 					else
 					{
+						this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %read_error%! ' + err);
+
 						resolve(null);
 					}
 				});
@@ -120,6 +122,10 @@ module.exports = class FileManager
 						if(!err)
 						{
 							cache[filePath] = JSON.stringify(data);
+						}
+						else
+						{
+							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %update_error%! ' + err);
 						}
 
 						resolve(err == null);
