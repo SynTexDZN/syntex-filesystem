@@ -89,14 +89,14 @@ module.exports = class FileManager
 						}
 						catch(e)
 						{
-							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %parse_error%! ' + e);
+							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %parse_error%!', e);
 
 							resolve(null);
 						}
 					}
 					else
 					{
-						this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %read_error%! ' + err);
+						this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %read_error%!', err);
 
 						resolve(null);
 					}
@@ -132,7 +132,7 @@ module.exports = class FileManager
 						}
 						else
 						{
-							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %update_error%! ' + err);
+							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %update_error%!', err);
 						}
 
 						resolve(err == null);
@@ -183,7 +183,7 @@ module.exports = class FileManager
 					if(files && !err)
 					{
 						var fileArray = [];
-						
+
 						for(const i in files)
 						{
 							try
@@ -196,7 +196,7 @@ module.exports = class FileManager
 							}
 							catch(e)
 							{
-								this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(files[i]).base + '] %parse_error%! ' + e);
+								this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(files[i]).base + '] %parse_error%!', e);
 							}
 						}
 
