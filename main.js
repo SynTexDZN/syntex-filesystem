@@ -16,6 +16,11 @@ module.exports = class FileManager
 
 				fs.accessSync(absPath, fs.constants.W_OK);
 
+				if(!fs.existsSync(absPath))
+				{
+					fs.mkdirSync(absPath);
+				}
+
 				this.basePath = absPath;
 
 				if(initDirectories != null)
@@ -84,6 +89,8 @@ module.exports = class FileManager
 						}
 						catch(e)
 						{
+							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %parse_error%! ' + e);
+
 							resolve(null);
 						}
 					}
@@ -133,12 +140,77 @@ module.exports = class FileManager
 				}
 				else
 				{
-					resolve(false);
+					resolve(true);
 				}
 			}
 			else
 			{
 				resolve(false);
+			}
+		});
+	}
+
+	deleteFile(relPath)
+	{
+		return new Promise((resolve) => {
+
+			if(this.isReady() && relPath != null)
+			{
+				var filePath = path.join(this.basePath, relPath);
+
+				fs.unlink(filePath, (err) => {
+					
+					resolve(err != null && err.code != 'ENOENT' ? false : true);
+				});
+			}
+			else
+			{
+				resolve(false);
+			}
+		});
+	}
+
+	readDirectory(relPath)
+	{
+		return new Promise((resolve) => {
+
+			if(this.isReady() && relPath != null)
+			{
+				var filePath = path.join(this.basePath, relPath);
+
+				fs.readdir(filePath, (err, files) => {
+
+					if(files && !err)
+					{
+						var fileArray = [];
+						
+						for(const i in files)
+						{
+							try
+							{
+								var obj = JSON.parse(fs.readFileSync(path.join(filePath, files[i])).toString());
+
+								obj.id = path.parse(files[i]).name;
+
+								fileArray.push(obj);
+							}
+							catch(e)
+							{
+								this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(files[i]).base + '] %parse_error%! ' + e);
+							}
+						}
+
+						resolve(fileArray);
+					}
+					else
+					{
+						resolve(null);
+					}
+				});
+			}
+			else
+			{
+				resolve(null);
 			}
 		});
 	}
