@@ -1,12 +1,13 @@
 const fs = require('fs'), path = require('path');
 
-var ready = false, cache = {};
+var cache = {};
 
 module.exports = class FileManager
 {
-	constructor(basePath, logger, initDirectories)
+	constructor(basePath, logger, initDirectories, enableCache)
 	{
 		this.logger = logger;
+		this.enableCache = enableCache;
 
 		if(basePath != null)
 		{
@@ -27,8 +28,6 @@ module.exports = class FileManager
 				{
 					this.createDirectories(initDirectories);
 				}
-
-				ready = true;
 			}
 			catch(e)
 			{
@@ -43,7 +42,7 @@ module.exports = class FileManager
 
 	isReady()
 	{
-		return ready;
+		return this.basePath != null;
 	}
 
 	createDirectories(directories)
@@ -83,7 +82,10 @@ module.exports = class FileManager
 								file = JSON.parse(file);
 							}
 
-							cache[filePath] = JSON.stringify(file);
+							if(this.enableCache)
+							{
+								cache[filePath] = JSON.stringify(file);
+							}
 
 							resolve(file);
 						}
@@ -128,7 +130,10 @@ module.exports = class FileManager
 						
 						if(!err)
 						{
-							cache[filePath] = JSON.stringify(data);
+							if(this.enableCache)
+							{
+								cache[filePath] = JSON.stringify(data);
+							}
 						}
 						else
 						{
@@ -217,11 +222,11 @@ module.exports = class FileManager
 
 	fileChanged(filePath, data)
 	{
-		if(cache[filePath] != null && cache[filePath] == JSON.stringify(data))
+		if(this.enableCache && cache[filePath] != null && cache[filePath] == JSON.stringify(data))
 		{
 			return false;
 		}
-		
+
 		return true;
 	}
 }
