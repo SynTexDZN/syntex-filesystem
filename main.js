@@ -191,17 +191,20 @@ module.exports = class FileManager
 
 						for(const i in files)
 						{
-							try
+							if(fs.statSync(path.join(filePath, files[i])).isFile())
 							{
-								var obj = JSON.parse(fs.readFileSync(path.join(filePath, files[i])).toString());
+								try
+								{
+									var obj = JSON.parse(fs.readFileSync(path.join(filePath, files[i])).toString());
 
-								obj.id = path.parse(files[i]).name;
+									obj.id = path.parse(files[i]).name;
 
-								fileArray.push(obj);
-							}
-							catch(e)
-							{
-								this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(files[i]).base + '] %parse_error%!', e);
+									fileArray.push(obj);
+								}
+								catch(e)
+								{
+									this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(files[i]).base + '] %parse_error%!', e);
+								}
 							}
 						}
 
