@@ -140,17 +140,17 @@ module.exports = class FileManager
 							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %update_error%!', err);
 						}
 
-						resolve(err == null);
+						resolve({ success : err == null, changed : true });
 					});
 				}
 				else
 				{
-					resolve(true);
+					resolve({ success : true, changed : false });
 				}
 			}
 			else
 			{
-				resolve(false);
+				resolve({ success : false, changed : false });
 			}
 		});
 	}
