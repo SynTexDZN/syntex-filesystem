@@ -132,7 +132,7 @@ module.exports = class FileManager
 						{
 							if(this.enableCache)
 							{
-								cache[filePath] = JSON.stringify(data);
+								cache[filePath] = JSON.stringify(JSON.parse(data));
 							}
 						}
 						else
