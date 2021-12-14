@@ -78,11 +78,9 @@ module.exports = class FileManager
 					{
 						try
 						{
-							file = file.toString();
-
 							if(path.parse(filePath).ext == '.json')
 							{
-								file = JSON.parse(file);
+								file = JSON.parse(file.toString());
 							}
 
 							if(this.enableCache)
