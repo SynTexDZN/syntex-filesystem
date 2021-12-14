@@ -61,13 +61,16 @@ module.exports = class FileManager
 		}
 	}
 
-	readFile(relPath)
+	readFile(filePath)
 	{
 		return new Promise((resolve) => {
 
-			if(this.isReady() && relPath != null)
+			if(this.isReady() && filePath != null)
 			{
-				var filePath = path.join(this.basePath, relPath);
+				if(!path.isAbsolute(filePath))
+				{
+					filePath = path.join(this.basePath, filePath);
+				}
 
 				fs.readFile(filePath, (err, file) => {
 
@@ -111,13 +114,16 @@ module.exports = class FileManager
 		});
 	}
 
-	writeFile(relPath, data)
+	writeFile(filePath, data)
 	{
 		return new Promise((resolve) => {
 
-			if(this.isReady() && relPath != null)
+			if(this.isReady() && filePath != null)
 			{
-				var filePath = path.join(this.basePath, relPath);
+				if(!path.isAbsolute(filePath))
+				{
+					filePath = path.join(this.basePath, filePath);
+				}
 
 				if(this.fileChanged(filePath, data))
 				{
@@ -155,13 +161,16 @@ module.exports = class FileManager
 		});
 	}
 
-	deleteFile(relPath)
+	deleteFile(filePath)
 	{
 		return new Promise((resolve) => {
 
-			if(this.isReady() && relPath != null)
+			if(this.isReady() && filePath != null)
 			{
-				var filePath = path.join(this.basePath, relPath);
+				if(!path.isAbsolute(filePath))
+				{
+					filePath = path.join(this.basePath, filePath);
+				}
 
 				fs.unlink(filePath, (err) => {
 					
@@ -175,13 +184,16 @@ module.exports = class FileManager
 		});
 	}
 
-	readDirectory(relPath)
+	readDirectory(filePath)
 	{
 		return new Promise((resolve) => {
 
-			if(this.isReady() && relPath != null)
+			if(this.isReady() && filePath != null)
 			{
-				var filePath = path.join(this.basePath, relPath);
+				if(!path.isAbsolute(filePath))
+				{
+					filePath = path.join(this.basePath, filePath);
+				}
 
 				fs.readdir(filePath, (err, files) => {
 
