@@ -8,6 +8,9 @@
 		"homebridge": ">=0.3.0",
 		"node": ">=9.11.2"
 	},
+	"dependencies": {
+		"syntex-logger": "1.0.8-b10"
+	},
 	"keywords": [
 		"syntex",
 		"syntex-filesystem",
