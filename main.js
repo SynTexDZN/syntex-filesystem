@@ -36,7 +36,7 @@ module.exports = class FileManager
 		}
 		else
 		{
-			this.logger.log('error', 'bridge', 'Bridge', 'Es wurde kein Pfad für die Datensicherung angegeben!'); // TODO: Translate
+			this.logger.log('error', 'bridge', 'Bridge', '%no_base_path%!');
 		}
 	}
 
