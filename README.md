@@ -28,11 +28,13 @@ let files = new FileSystem(baseDirectory, logger, generateDirectories);
 var filePath = '/example/demo.json',
     exampleContent = { a : 1, b : 2 };
 
-files.writeFile(filePath, exampleContent).then((success) => {
+files.writeFile(filePath, exampleContent).then((response) => {
+
+    logger.debug(response);
 
     files.readFile(filePath).then((data) => {
         
-        logger.debug(data)
+        logger.debug(data);
     });
 });
 ```
