@@ -4,16 +4,17 @@ var cache = {};
 
 module.exports = class FileManager
 {
-	constructor(basePath, logger, initDirectories, enableCache)
+	constructor(platform, options)
 	{
-		this.logger = logger;
-		this.enableCache = enableCache;
+		this.logger = platform.logger;
+		
+		this.enableCache = options.enableCache;
 
-		if(basePath != null)
+		if(platform.baseDirectory != null)
 		{
 			try
 			{
-				var absPath = path.resolve(basePath);
+				var absPath = path.resolve(platform.baseDirectory);
 
 				fs.accessSync(absPath, fs.constants.W_OK);
 
@@ -24,9 +25,9 @@ module.exports = class FileManager
 
 				this.basePath = absPath;
 
-				if(initDirectories != null)
+				if(options.initDirectories != null)
 				{
-					this.createDirectories(initDirectories);
+					this.createDirectories(options.initDirectories);
 				}
 			}
 			catch(e)

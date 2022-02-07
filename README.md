@@ -11,19 +11,17 @@ An intelligent file system for reading and writing files.
 
 ## Use This In Your Code
 ```js
-let Logger = require('syntex-logger'), FileSystem = require('syntex-filesystem');
+let Logger = require('syntex-logger'),
+    FileSystem = require('syntex-filesystem');
 
-var pluginName = 'Demo Plugin',
-    logStoragePath = '/var/demo_plugin/logs',
-    debug = true,
-    language = 'us';
+let logger = new Logger({ pluginName : 'Demo Plugin', language : 'us', debug : true });
 
-let logger = new Logger(pluginName, logStoragePath, debug, language);
+logger.setLogDirectory('/var/demo_plugin/logs');
 
 var baseDirectory = '/var/demo_plugin/',
-    generateDirectories = ['example', 'logs'];
+    initDirectories = ['example', 'logs'];
 
-let files = new FileSystem(baseDirectory, logger, generateDirectories);
+let files = new FileSystem({ baseDirectory, logger }, { initDirectories, enableCache : false });
 
 var filePath = '/example/demo.json',
     exampleContent = { a : 1, b : 2 };
