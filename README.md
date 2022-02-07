@@ -18,10 +18,7 @@ let logger = new Logger({ pluginName : 'Demo Plugin', language : 'us', debug : t
 
 logger.setLogDirectory('/var/demo_plugin/logs');
 
-var baseDirectory = '/var/demo_plugin/',
-    initDirectories = ['example', 'logs'];
-
-let files = new FileSystem({ baseDirectory, logger }, { initDirectories, enableCache : false });
+let files = new FileSystem({ logger, baseDirectory : '/var/demo_plugin/' }, { initDirectories : ['example', 'logs'], enableCache : false });
 
 var filePath = '/example/demo.json',
     exampleContent = { a : 1, b : 2 };
