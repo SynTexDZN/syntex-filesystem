@@ -73,15 +73,15 @@ module.exports = class FileManager
 					filePath = path.join(this.basePath, filePath);
 				}
 
-				fs.readFile(filePath, (err, file) => {
+				fs.readFile(filePath, { encoding : 'utf8' }, (error, file) => {
 
-					if(file && !err)
+					if(file != null && error == null)
 					{
 						try
 						{
 							if(path.parse(filePath).ext == '.json')
 							{
-								file = JSON.parse(file.toString());
+								file = JSON.parse(file);
 							}
 
 							if(this.enableCache)
@@ -89,26 +89,26 @@ module.exports = class FileManager
 								cache[filePath] = JSON.stringify(file);
 							}
 
-							resolve(file);
+							resolve(file, false);
 						}
 						catch(e)
 						{
 							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %parse_error%!', e);
 
-							resolve(null);
+							resolve(null, true);
 						}
 					}
 					else
 					{
-						this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %read_error%!', err);
+						this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %read_error%!', error);
 
-						resolve(null);
+						resolve(null, error != null && error.code != 'ENOENT');
 					}
 				});
 			}
 			else
 			{
-				resolve(null);
+				resolve(null, true);
 			}
 		});
 	}
@@ -131,9 +131,9 @@ module.exports = class FileManager
 						data = JSON.stringify(data, null, '\t');
 					}
 
-					fs.writeFile(filePath, data, (err) => {
+					fs.writeFile(filePath, data, (error) => {
 						
-						if(!err)
+						if(!error)
 						{
 							if(this.enableCache)
 							{
@@ -142,10 +142,10 @@ module.exports = class FileManager
 						}
 						else
 						{
-							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %update_error%!', err);
+							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %update_error%!', error);
 						}
 
-						resolve({ success : err == null, changed : true });
+						resolve({ success : error == null, changed : true });
 					});
 				}
 				else
@@ -171,9 +171,9 @@ module.exports = class FileManager
 					filePath = path.join(this.basePath, filePath);
 				}
 
-				fs.unlink(filePath, (err) => {
+				fs.unlink(filePath, (error) => {
 					
-					resolve(err != null && err.code != 'ENOENT' ? false : true);
+					resolve(error != null && error.code != 'ENOENT' ? false : true);
 				});
 			}
 			else
@@ -194,9 +194,9 @@ module.exports = class FileManager
 					filePath = path.join(this.basePath, filePath);
 				}
 
-				fs.readdir(filePath, (err, files) => {
+				fs.readdir(filePath, (error, files) => {
 
-					if(files && !err)
+					if(files && !error)
 					{
 						var fileArray = [];
 
