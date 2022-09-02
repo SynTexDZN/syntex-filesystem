@@ -30,7 +30,8 @@ files.writeFile(filePath, exampleContent).then((response) => {
     files.readFile(filePath).then((data) => {
         
         logger.debug(data);
-    });
+
+    }).catch(() => {}));
 });
 ```
 ## Troubleshooting

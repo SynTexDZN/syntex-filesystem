@@ -64,7 +64,7 @@ module.exports = class FileManager
 
 	readFile(filePath)
 	{
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 
 			if(this.isReady() && filePath != null)
 			{
@@ -89,26 +89,33 @@ module.exports = class FileManager
 								cache[filePath] = JSON.stringify(file);
 							}
 
-							resolve(file, false);
+							resolve(file);
 						}
 						catch(e)
 						{
 							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %parse_error%!', e);
 
-							resolve(null, true);
+							reject();
 						}
 					}
 					else
 					{
 						this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %read_error%!', error);
 
-						resolve(null, error != null && error.code != 'ENOENT');
+						if(error != null && error.code != 'ENOENT')
+						{
+							reject();
+						}
+						else
+						{
+							resolve(null);
+						}
 					}
 				});
 			}
 			else
 			{
-				resolve(null, true);
+				reject();
 			}
 		});
 	}
