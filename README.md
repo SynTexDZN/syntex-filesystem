@@ -31,7 +31,13 @@ files.writeFile(filePath, exampleContent).then((response) => {
         
         logger.debug(data);
 
-    }).catch(() => {}));
+    }).catch((error) => {
+
+        if(error != null)
+        {
+            logger.err(error);
+        }
+    }));
 });
 ```
 ## Troubleshooting

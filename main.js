@@ -95,7 +95,7 @@ module.exports = class FileManager
 						{
 							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %parse_error%!', e);
 
-							reject();
+							reject(e);
 						}
 					}
 					else
@@ -104,7 +104,7 @@ module.exports = class FileManager
 
 						if(error != null && error.code != 'ENOENT')
 						{
-							reject();
+							reject(error);
 						}
 						else
 						{
