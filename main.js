@@ -6,6 +6,9 @@ module.exports = class FileManager
 {
 	constructor(platform, options)
 	{
+		this.running = [];
+		this.query = {};
+
 		this.logger = platform.logger;
 		
 		this.enableCache = options.enableCache;
@@ -133,27 +136,40 @@ module.exports = class FileManager
 
 				if(this.fileChanged(filePath, data))
 				{
-					if(path.parse(filePath).ext == '.json')
+					if(!this.running.includes(filePath))
 					{
-						data = JSON.stringify(data, null, '\t');
-					}
+						this.running.push(filePath);
 
-					fs.writeFile(filePath, data, (error) => {
-						
-						if(!error)
+						if(path.parse(filePath).ext == '.json')
 						{
-							if(this.enableCache)
+							data = JSON.stringify(data, null, '\t');
+						}
+
+						fs.writeFile(filePath, data, (error) => {
+							
+							if(!error)
 							{
-								cache[filePath] = JSON.stringify(JSON.parse(data));
+								if(this.enableCache)
+								{
+									cache[filePath] = JSON.stringify(JSON.parse(data));
+								}
 							}
-						}
-						else
-						{
-							this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %update_error%!', error);
-						}
+							else
+							{
+								this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(filePath).base + '] %update_error%!', error);
+							}
 
-						resolve({ success : error == null, changed : true });
-					});
+							this.running.splice(this.running.indexOf(filePath), 1);
+
+							resolve({ success : error == null, changed : true });
+
+							delete this.query[this._runQuery(filePath)];
+						});
+					}
+					else
+					{
+						this._addQuery({ filePath, data, resolve });
+					}
 				}
 				else
 				{
@@ -249,5 +265,30 @@ module.exports = class FileManager
 		}
 
 		return true;
+	}
+
+	_addQuery(query)
+	{
+		var id = 0, keys = Object.keys(this.query);
+
+		if(keys.length > 0)
+		{
+			id = parseInt(keys[keys.length - 1]) + 1;
+		}
+
+		this.query[id] = query;
+	}
+
+	_runQuery(filePath)
+	{
+		for(const id in this.query)
+		{
+			if(this.query[id].filePath == filePath)
+			{
+				this.writeFile(this.query[id].filePath, this.query[id].data).then((response) => this.query[id].resolve(response));
+
+				return id;
+			}
+		}
 	}
 }
