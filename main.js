@@ -283,9 +283,11 @@ module.exports = class FileManager
 	{
 		for(const id in this.query)
 		{
-			if(this.query[id].filePath == filePath)
+			const file = this.query[id];
+
+			if(file.filePath == filePath)
 			{
-				this.writeFile(this.query[id].filePath, this.query[id].data).then((response) => this.query[id].resolve(response));
+				this.writeFile(file.filePath, file.data).then((response) => file.resolve(response));
 
 				return id;
 			}
