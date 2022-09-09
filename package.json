@@ -1,6 +1,6 @@
 {
 	"name": "syntex-filesystem",
-	"version": "1.0.2-b11",
+	"version": "1.0.2-b12",
 	"description": "A Basic File System",
 	"main": "main.js",
 	"author": "SynTexDZN",
