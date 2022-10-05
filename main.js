@@ -53,9 +53,9 @@ module.exports = class FileManager
 	{
 		if(this.isReady())
 		{
-			for(const i in directories)
+			for(const directory of directories)
 			{
-				var absPath = path.join(this.basePath, directories[i]);
+				var absPath = path.join(this.basePath, directory);
 
 				if(!fs.existsSync(absPath))
 				{
@@ -223,21 +223,21 @@ module.exports = class FileManager
 					{
 						var fileArray = [];
 
-						for(const i in files)
+						for(const file of files)
 						{
-							if(fs.statSync(path.join(filePath, files[i])).isFile())
+							if(fs.statSync(path.join(filePath, file)).isFile())
 							{
 								try
 								{
-									var obj = JSON.parse(fs.readFileSync(path.join(filePath, files[i])).toString());
+									var obj = JSON.parse(fs.readFileSync(path.join(filePath, file)).toString());
 
-									obj.id = path.parse(files[i]).name;
+									obj.id = path.parse(file).name;
 
 									fileArray.push(obj);
 								}
 								catch(e)
 								{
-									this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(files[i]).base + '] %parse_error%!', e);
+									this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(file).base + '] %parse_error%!', e);
 								}
 							}
 						}
