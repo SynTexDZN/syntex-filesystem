@@ -89,7 +89,14 @@ module.exports = class FileManager
 
 							if(this.enableCache)
 							{
-								cache[filePath] = JSON.stringify(file);
+								if(path.parse(filePath).ext == '.json')
+								{
+									cache[filePath] = JSON.stringify(file);
+								}
+								else
+								{
+									cache[filePath] = file;
+								}
 							}
 
 							resolve(file);
@@ -151,7 +158,14 @@ module.exports = class FileManager
 							{
 								if(this.enableCache)
 								{
-									cache[filePath] = JSON.stringify(JSON.parse(data));
+									if(path.parse(filePath).ext == '.json')
+									{
+										cache[filePath] = JSON.stringify(JSON.parse(data));
+									}
+									else
+									{
+										cache[filePath] = data;
+									}
 								}
 							}
 							else
@@ -251,9 +265,13 @@ module.exports = class FileManager
 
 	fileChanged(filePath, data)
 	{
-		if(this.enableCache && cache[filePath] != null && cache[filePath] == JSON.stringify(data))
+		if(this.enableCache && cache[filePath] != null)
 		{
-			return false;
+			if((path.parse(filePath).ext == '.json' && cache[filePath] == JSON.stringify(data))
+			|| (path.parse(filePath).ext != '.json' && cache[filePath] == data))
+			{
+				return false;
+			}
 		}
 
 		return true;
