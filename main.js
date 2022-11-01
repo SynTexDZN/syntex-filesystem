@@ -221,24 +221,16 @@ module.exports = class FileManager
 
 					if(files && !error)
 					{
-						var fileArray = [];
+						var fileArray = {};
 
 						for(const file of files)
 						{
 							if(fs.statSync(path.join(filePath, file)).isFile())
 							{
-								try
-								{
-									var obj = JSON.parse(fs.readFileSync(path.join(filePath, file)).toString());
+								this.readFile(path.join(filePath, file)).then((content) => {
 
-									obj.id = path.parse(file).name;
-
-									fileArray.push(obj);
-								}
-								catch(e)
-								{
-									this.logger.log('error', 'bridge', 'Bridge', '[' + path.parse(file).base + '] %parse_error%!', e);
-								}
+									fileArray[file] = content;
+								});
 							}
 						}
 
