@@ -37,7 +37,7 @@ files.writeFile(filePath, exampleContent).then((response) => {
         {
             logger.err(error);
         }
-    }));
+    });
 });
 ```
 ## Troubleshooting
