@@ -71,12 +71,19 @@ module.exports = class FileManager
 
 			if(this.isReady() && filePath != null)
 			{
+				var options = {};
+				
 				if(!path.isAbsolute(filePath))
 				{
 					filePath = path.join(this.basePath, filePath);
 				}
 
-				fs.readFile(filePath, { encoding : 'utf8' }, (error, file) => {
+				if(path.parse(filePath).ext == '.json')
+				{
+					options.encoding = 'utf8';
+				}
+
+				fs.readFile(filePath, options, (error, file) => {
 
 					if(file != null && error == null)
 					{
