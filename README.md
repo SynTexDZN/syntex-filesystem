@@ -14,7 +14,7 @@ An intelligent file system for reading and writing files.
 let Logger = require('syntex-logger'),
     FileSystem = require('syntex-filesystem');
 
-let logger = new Logger({ pluginName : 'Demo Plugin', language : 'us', debug : true });
+let logger = new Logger({ pluginName : 'Demo Plugin' }, { language : 'us', levels : { debug : false }, time : true });
 
 logger.setLogDirectory('/var/demo_plugin/logs');
 
