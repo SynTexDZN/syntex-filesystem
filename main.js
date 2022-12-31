@@ -55,14 +55,29 @@ module.exports = class FileManager
 		{
 			for(const directory of directories)
 			{
-				var absPath = path.join(this.basePath, directory);
-
-				if(!fs.existsSync(absPath))
-				{
-					fs.mkdirSync(absPath);
-				}
+				this.createDirectory(directory);
 			}
 		}
+	}
+
+	createDirectory(directoryPath)
+	{
+		if(this.isReady())
+		{
+			if(!path.isAbsolute(directoryPath))
+			{
+				directoryPath = path.join(this.basePath, directoryPath);
+			}
+
+			if(!fs.existsSync(directoryPath))
+			{
+				fs.mkdirSync(directoryPath);
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	readFile(filePath)
