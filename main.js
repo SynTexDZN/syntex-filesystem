@@ -93,7 +93,7 @@ module.exports = class FileManager
 					filePath = path.join(this.basePath, filePath);
 				}
 
-				if(path.parse(filePath).ext == '.json')
+				if(path.parse(filePath).ext == '.json' || path.parse(filePath).ext == '.txt')
 				{
 					options.encoding = 'utf8';
 				}
