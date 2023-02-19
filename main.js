@@ -257,20 +257,20 @@ module.exports = class FileManager
 
 					if(files && !error)
 					{
-						var fileArray = {};
+						var fileArray = {}, promiseArray = [];
 
 						for(const file of files)
 						{
 							if(fs.statSync(path.join(filePath, file)).isFile())
 							{
-								this.readFile(path.join(filePath, file)).then((content) => {
+								promiseArray.push(this.readFile(path.join(filePath, file)).then((content) => {
 
 									fileArray[file] = content;
-								});
+								}));
 							}
 						}
 
-						resolve(fileArray);
+						Promise.all(promiseArray).then(() => resolve(fileArray));
 					}
 					else
 					{
