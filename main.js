@@ -230,9 +230,32 @@ module.exports = class FileManager
 					filePath = path.join(this.basePath, filePath);
 				}
 
-				fs.unlink(filePath, (error) => {
+				fs.rm(filePath, { recursive : false }, (error) => {
 					
-					resolve(error != null && error.code != 'ENOENT' ? false : true);
+					resolve(error == null);
+				});
+			}
+			else
+			{
+				resolve(false);
+			}
+		});
+	}
+
+	deleteDirectory(directoryPath)
+	{
+		return new Promise((resolve) => {
+
+			if(this.isReady() && directoryPath != null)
+			{
+				if(!path.isAbsolute(directoryPath))
+				{
+					directoryPath = path.join(this.basePath, directoryPath);
+				}
+
+				fs.rm(directoryPath, { recursive : true }, (error) => {
+					
+					resolve(error == null);
 				});
 			}
 			else
