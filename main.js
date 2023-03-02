@@ -219,6 +219,34 @@ module.exports = class FileManager
 		});
 	}
 
+	moveContent(fromPath, toPath)
+	{
+		return new Promise((resolve) => {
+
+			if(this.isReady() && fromPath != null && toPath != null)
+			{
+				if(!path.isAbsolute(fromPath))
+				{
+					fromPath = path.join(this.basePath, fromPath);
+				}
+
+				if(!path.isAbsolute(toPath))
+				{
+					toPath = path.join(this.basePath, toPath);
+				}
+
+				fs.rename(fromPath, toPath, (error) => {
+												
+					resolve(error == null);
+				});
+			}
+			else
+			{
+				resolve(false);
+			}
+		});
+	}
+
 	deleteFile(filePath)
 	{
 		return new Promise((resolve) => {
