@@ -38,10 +38,6 @@ module.exports = class FileManager
 				this.logger.err(e);
 			}
 		}
-		else
-		{
-			this.logger.log('error', 'bridge', 'Bridge', '%no_base_path%!');
-		}
 	}
 
 	isReady()
