@@ -275,18 +275,18 @@ module.exports = class FileManager
 		});
 	}
 
-	readDirectory(filePath)
+	readDirectory(directoryPath)
 	{
 		return new Promise((resolve) => {
 
-			if(this.isReady() && filePath != null)
+			if(this.isReady() && directoryPath != null)
 			{
-				if(!path.isAbsolute(filePath))
+				if(!path.isAbsolute(directoryPath))
 				{
-					filePath = path.join(this.basePath, filePath);
+					directoryPath = path.join(this.basePath, directoryPath);
 				}
 
-				fs.readdir(filePath, (error, files) => {
+				fs.readdir(directoryPath, (error, files) => {
 
 					if(files && !error)
 					{
@@ -294,9 +294,9 @@ module.exports = class FileManager
 
 						for(const file of files)
 						{
-							if(fs.statSync(path.join(filePath, file)).isFile())
+							if(fs.statSync(path.join(directoryPath, file)).isFile())
 							{
-								promiseArray.push(this.readFile(path.join(filePath, file)).then((content) => {
+								promiseArray.push(this.readFile(path.join(directoryPath, file)).then((content) => {
 
 									fileArray[file] = content;
 								}));
@@ -316,6 +316,21 @@ module.exports = class FileManager
 				resolve(null);
 			}
 		});
+	}
+
+	checkFile(filePath)
+	{
+		if(this.isReady() && filePath != null)
+		{
+			if(!path.isAbsolute(filePath))
+			{
+				filePath = path.join(this.basePath, filePath);
+			}
+
+			return fs.existsSync(filePath);
+		}
+
+		return false;
 	}
 
 	fileChanged(filePath, data)
